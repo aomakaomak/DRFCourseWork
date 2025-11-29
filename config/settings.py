@@ -138,3 +138,24 @@ REST_FRAMEWORK = {
     ),
 }
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+}
+
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", CELERY_BROKER_URL)
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    "send-habit-reminders-every-minute": {
+        "task": "habits.tasks.send_habit_reminders",
+        "schedule": crontab(),  # каждый минуту
+    },
+}
+
+# Telegram
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_API_URL = os.environ.get("TELEGRAM_API_URL", "https://api.telegram.org")
