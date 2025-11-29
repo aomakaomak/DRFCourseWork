@@ -37,10 +37,13 @@ INSTALLED_APPS = [
     "users",
     "habits",
     "rest_framework_simplejwt",
+    "corsheaders",
+    "drf_yasg",
 
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -159,3 +162,20 @@ CELERY_BEAT_SCHEDULE = {
 # Telegram
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_API_URL = os.environ.get("TELEGRAM_API_URL", "https://api.telegram.org")
+
+
+
+frontend_origins = os.environ.get("FRONTEND_ORIGINS", "")
+
+if frontend_origins:
+    CORS_ALLOWED_ORIGINS = [
+        origin.strip() for origin in frontend_origins.split(",") if origin.strip()
+    ]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+    ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+

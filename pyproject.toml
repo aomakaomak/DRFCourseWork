@@ -18,7 +18,9 @@ dependencies = [
     "celery (>=5.5.3,<6.0.0)",
     "redis (>=7.1.0,<8.0.0)",
     "requests (>=2.32.5,<3.0.0)",
-    "eventlet (>=0.40.4,<0.41.0)"
+    "eventlet (>=0.40.4,<0.41.0)",
+    "django-cors-headers (>=4.9.0,<5.0.0)",
+    "drf-yasg (>=1.21.11,<2.0.0)"
 ]
 
 
