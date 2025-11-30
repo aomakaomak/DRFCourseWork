@@ -151,7 +151,7 @@ from celery.schedules import crontab
 CELERY_BEAT_SCHEDULE = {
     "send-habit-reminders-every-minute": {
         "task": "habits.tasks.send_habit_reminders",
-        "schedule": crontab(),  # каждый минуту
+        "schedule": crontab(),
     },
 }
 
