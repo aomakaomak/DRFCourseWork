@@ -5,7 +5,9 @@ from rest_framework.serializers import ValidationError
 from .models import Habit
 
 
-def validate_habit_business_rules(attrs: dict, instance: Optional[Habit] = None) -> None:
+def validate_habit_business_rules(
+    attrs: dict, instance: Optional[Habit] = None
+) -> None:
     """
     Комплексный валидатор бизнес-правил для модели Habit.
 
@@ -45,23 +47,33 @@ def validate_habit_business_rules(attrs: dict, instance: Optional[Habit] = None)
 
     # 1. reward и related_habit взаимоисключающие
     if reward and related_habit:
-        errors["reward"] = "Нельзя одновременно указывать вознаграждение и связанную привычку."
-        errors["related_habit"] = "Нельзя одновременно указывать связанную привычку и вознаграждение."
+        errors["reward"] = (
+            "Нельзя одновременно указывать вознаграждение и связанную привычку."
+        )
+        errors["related_habit"] = (
+            "Нельзя одновременно указывать связанную привычку и вознаграждение."
+        )
 
     # 2. Время выполнения <= 120 (дополнительная защита)
     if time_to_complete is not None and time_to_complete > 120:
-        errors["time_to_complete"] = "Время на выполнение привычки не может превышать 120 секунд."
+        errors["time_to_complete"] = (
+            "Время на выполнение привычки не может превышать 120 секунд."
+        )
 
     # 3. В связанные привычки могут попадать только приятные привычки
     if related_habit is not None and not related_habit.is_pleasant:
-        errors["related_habit"] = "В связанные привычки могут попадать только приятные привычки."
+        errors["related_habit"] = (
+            "В связанные привычки могут попадать только приятные привычки."
+        )
 
     # 4. У приятной привычки не может быть вознаграждения или связанной привычки
     if is_pleasant:
         if reward:
             errors["reward"] = "У приятной привычки не может быть вознаграждения."
         if related_habit is not None:
-            errors["related_habit"] = "У приятной привычки не может быть связанной привычки."
+            errors["related_habit"] = (
+                "У приятной привычки не может быть связанной привычки."
+            )
 
     # 5. Нельзя выполнять привычку реже, чем 1 раз в 7 дней (periodicity ∈ [1, 7])
     if periodicity is not None:
@@ -71,7 +83,9 @@ def validate_habit_business_rules(attrs: dict, instance: Optional[Habit] = None)
             errors["periodicity"] = "Периодичность должна быть целым числом от 1 до 7."
         else:
             if value < 1 or value > 7:
-                errors["periodicity"] = "Нельзя выполнять привычку реже, чем 1 раз в 7 дней."
+                errors["periodicity"] = (
+                    "Нельзя выполнять привычку реже, чем 1 раз в 7 дней."
+                )
 
     if errors:
         # DRF ValidationError: поддерживает ошибки по полям

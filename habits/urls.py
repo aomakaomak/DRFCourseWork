@@ -12,7 +12,6 @@ router.register(r"habits", HabitViewSet, basename="habit")
 urlpatterns = [
     # CRUD для привычек текущего пользователя
     path("", include(router.urls)),
-
     # Список публичных привычек
     path(
         "public-habits/",

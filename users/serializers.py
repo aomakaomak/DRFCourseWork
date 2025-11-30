@@ -30,4 +30,3 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             password=password,
         )
         return user
-

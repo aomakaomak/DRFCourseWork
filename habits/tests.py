@@ -42,7 +42,9 @@ class HabitModelTests(TestCase):
 
 class HabitBusinessRulesValidatorTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="validator_user", password="strongpass123")
+        self.user = User.objects.create_user(
+            username="validator_user", password="strongpass123"
+        )
         self.pleasant_habit = Habit.objects.create(
             user=self.user,
             place="Кино",
@@ -72,7 +74,9 @@ class HabitBusinessRulesValidatorTests(TestCase):
             "periodicity": 1,
             "time_to_complete": 60,
         }
-        with self.assertRaisesMessage(Exception, "Нельзя одновременно указывать вознаграждение"):
+        with self.assertRaisesMessage(
+            Exception, "Нельзя одновременно указывать вознаграждение"
+        ):
             try:
                 validate_habit_business_rules(attrs)
             except Exception as exc:
@@ -87,7 +91,9 @@ class HabitBusinessRulesValidatorTests(TestCase):
             "periodicity": 1,
             "time_to_complete": 130,
         }
-        with self.assertRaisesMessage(Exception, "Время на выполнение привычки не может превышать 120 секунд"):
+        with self.assertRaisesMessage(
+            Exception, "Время на выполнение привычки не может превышать 120 секунд"
+        ):
             try:
                 validate_habit_business_rules(attrs)
             except Exception as exc:
@@ -102,7 +108,9 @@ class HabitBusinessRulesValidatorTests(TestCase):
             "periodicity": 1,
             "time_to_complete": 60,
         }
-        with self.assertRaisesMessage(Exception, "В связанные привычки могут попадать только приятные привычки"):
+        with self.assertRaisesMessage(
+            Exception, "В связанные привычки могут попадать только приятные привычки"
+        ):
             try:
                 validate_habit_business_rules(attrs)
             except Exception as exc:
@@ -178,7 +186,9 @@ class HabitBusinessRulesValidatorTests(TestCase):
 
 class HabitSerializerTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="serializer_user", password="strongpass123")
+        self.user = User.objects.create_user(
+            username="serializer_user", password="strongpass123"
+        )
         self.factory = APIRequestFactory()
 
     def test_create_uses_request_user(self):
@@ -213,7 +223,9 @@ class HabitSerializerTests(TestCase):
             time_to_complete=60,
             is_public=False,
         )
-        other_user = User.objects.create_user(username="other", password="strongpass123")
+        other_user = User.objects.create_user(
+            username="other", password="strongpass123"
+        )
 
         data = {
             "user": other_user.id,
@@ -231,7 +243,9 @@ class HabitSerializerTests(TestCase):
 class IsOwnerOrReadOnlyPermissionTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="owner", password="strongpass123")
-        self.other_user = User.objects.create_user(username="other", password="strongpass123")
+        self.other_user = User.objects.create_user(
+            username="other", password="strongpass123"
+        )
         self.habit = Habit.objects.create(
             user=self.user,
             place="Дом",
@@ -248,19 +262,25 @@ class IsOwnerOrReadOnlyPermissionTests(TestCase):
         request = APIRequestFactory().get("/some-url/")
         request.user = self.user
 
-        self.assertTrue(self.permission.has_object_permission(request, None, self.habit))
+        self.assertTrue(
+            self.permission.has_object_permission(request, None, self.habit)
+        )
 
     def test_other_user_has_no_object_permission(self):
         request = APIRequestFactory().get("/some-url/")
         request.user = self.other_user
 
-        self.assertFalse(self.permission.has_object_permission(request, None, self.habit))
+        self.assertFalse(
+            self.permission.has_object_permission(request, None, self.habit)
+        )
 
 
 class HabitViewSetAPITests(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="user1", password="strongpass123")
-        self.other_user = User.objects.create_user(username="user2", password="strongpass123")
+        self.other_user = User.objects.create_user(
+            username="user2", password="strongpass123"
+        )
         self.list_url = reverse("habits:habit-list")
 
     def authenticate(self, user):
@@ -359,7 +379,9 @@ class HabitViewSetAPITests(APITestCase):
 
 class PublicHabitListViewTests(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="public_user", password="strongpass123")
+        self.user = User.objects.create_user(
+            username="public_user", password="strongpass123"
+        )
         self.url = reverse("habits:public-habits")
 
     def authenticate(self):
@@ -416,8 +438,12 @@ class HabitViewSetDirectCallTests(TestCase):
     """
 
     def setUp(self):
-        self.user = User.objects.create_user(username="factory_user", password="strongpass123")
-        self.other_user = User.objects.create_user(username="factory_other", password="strongpass123")
+        self.user = User.objects.create_user(
+            username="factory_user", password="strongpass123"
+        )
+        self.other_user = User.objects.create_user(
+            username="factory_other", password="strongpass123"
+        )
         Habit.objects.create(
             user=self.user,
             place="Дом",
@@ -459,7 +485,9 @@ class SendHabitRemindersTaskTests(TestCase):
             telegram_chat_id=123456,
         )
 
-    @override_settings(TELEGRAM_API_URL="https://test-api", TELEGRAM_BOT_TOKEN="TEST_TOKEN")
+    @override_settings(
+        TELEGRAM_API_URL="https://test-api", TELEGRAM_BOT_TOKEN="TEST_TOKEN"
+    )
     @patch("habits.tasks.requests.post")
     @patch("django.utils.timezone.localtime")
     def test_send_habit_reminders_sends_message_for_matching_habit(
@@ -494,7 +522,9 @@ class SendHabitRemindersTaskTests(TestCase):
         self.assertIn("Выпить воду", kwargs["json"]["text"])
         self.assertIn(habit.place, kwargs["json"]["text"])
 
-    @override_settings(TELEGRAM_API_URL="https://test-api", TELEGRAM_BOT_TOKEN="TEST_TOKEN")
+    @override_settings(
+        TELEGRAM_API_URL="https://test-api", TELEGRAM_BOT_TOKEN="TEST_TOKEN"
+    )
     @patch("habits.tasks.requests.post")
     @patch("django.utils.timezone.localtime")
     def test_send_habit_reminders_respects_periodicity(
@@ -524,4 +554,3 @@ class SendHabitRemindersTaskTests(TestCase):
         send_habit_reminders()
 
         mock_post.assert_not_called()
-

@@ -32,14 +32,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "rest_framework",
     "users",
     "habits",
     "rest_framework_simplejwt",
     "corsheaders",
     "drf_yasg",
-
 ]
 
 MIDDLEWARE = [
@@ -136,9 +134,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.IsAuthenticated",
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 SIMPLE_JWT = {
@@ -164,7 +160,6 @@ TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_API_URL = os.environ.get("TELEGRAM_API_URL", "https://api.telegram.org")
 
 
-
 frontend_origins = os.environ.get("FRONTEND_ORIGINS", "")
 
 if frontend_origins:
@@ -177,5 +172,3 @@ else:
     ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-

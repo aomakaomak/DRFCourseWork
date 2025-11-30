@@ -26,7 +26,6 @@ class RegisterView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-
 @csrf_exempt
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -59,15 +58,19 @@ def telegram_webhook(request):
             user.telegram_chat_id = chat_id
             user.save(update_fields=["telegram_chat_id"])
 
-
     if text.strip() == "/start":
         from django.conf import settings
         import requests
-        url = f"{settings.TELEGRAM_API_URL}/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
-        requests.post(url, json={
-            "chat_id": chat_id,
-            "text": "Привет! Я буду напоминать тебе о твоих привычках."
-        })
+
+        url = (
+            f"{settings.TELEGRAM_API_URL}/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+        )
+        requests.post(
+            url,
+            json={
+                "chat_id": chat_id,
+                "text": "Привет! Я буду напоминать тебе о твоих привычках.",
+            },
+        )
 
     return Response(status=200)
-

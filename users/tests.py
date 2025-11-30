@@ -132,7 +132,9 @@ class TelegramWebhookTests(APITestCase):
         self.user.refresh_from_db()
         self.assertEqual(self.user.telegram_chat_id, 555555)
 
-    @override_settings(TELEGRAM_API_URL="https://test-api", TELEGRAM_BOT_TOKEN="TEST_TOKEN")
+    @override_settings(
+        TELEGRAM_API_URL="https://test-api", TELEGRAM_BOT_TOKEN="TEST_TOKEN"
+    )
     @patch("requests.post")
     def test_webhook_start_command_sends_greeting_message(self, mock_post):
         chat_id = 777777
@@ -192,7 +194,9 @@ class JWTAuthTests(APITestCase):
         )
         refresh_token = obtain_resp.data["refresh"]
 
-        response = self.client.post(refresh_url, {"refresh": refresh_token}, format="json")
+        response = self.client.post(
+            refresh_url, {"refresh": refresh_token}, format="json"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("access", response.data)

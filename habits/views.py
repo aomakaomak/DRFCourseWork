@@ -45,9 +45,10 @@ class PublicHabitListView(generics.ListAPIView):
     """
 
     serializer_class = HabitSerializer
-    permission_classes = (IsAuthenticated,)  # можно заменить на AllowAny при необходимости
+    permission_classes = (
+        IsAuthenticated,
+    )  # можно заменить на AllowAny при необходимости
     pagination_class = HabitPagination
 
     def get_queryset(self):
         return Habit.objects.filter(is_public=True).order_by("time", "place")
-

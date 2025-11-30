@@ -55,8 +55,12 @@ class Habit(models.Model):
     periodicity = models.PositiveSmallIntegerField(
         default=1,
         validators=[
-            MinValueValidator(1, message="Нельзя выполнять привычку реже, чем 1 раз в 7 дней."),
-            MaxValueValidator(7, message="Нельзя выполнять привычку реже, чем 1 раз в 7 дней."),
+            MinValueValidator(
+                1, message="Нельзя выполнять привычку реже, чем 1 раз в 7 дней."
+            ),
+            MaxValueValidator(
+                7, message="Нельзя выполнять привычку реже, чем 1 раз в 7 дней."
+            ),
         ],
         verbose_name="Периодичность (дни)",
         help_text="Периодичность выполнения привычки в днях. От 1 до 7.",
@@ -72,7 +76,10 @@ class Habit(models.Model):
 
     time_to_complete = models.PositiveSmallIntegerField(
         validators=[
-            MaxValueValidator(120, message="Время на выполнение привычки не может превышать 120 секунд."),
+            MaxValueValidator(
+                120,
+                message="Время на выполнение привычки не может превышать 120 секунд.",
+            ),
         ],
         verbose_name="Время на выполнение (секунды)",
         help_text="Предполагаемое время на выполнение привычки в секундах (не более 120).",
@@ -102,4 +109,3 @@ class Habit(models.Model):
     def __str__(self) -> str:
         habit_type = "приятная" if self.is_pleasant else "полезная"
         return f"{self.user} — {habit_type} привычка: {self.action}"
-

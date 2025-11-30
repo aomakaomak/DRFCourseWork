@@ -46,7 +46,9 @@ def send_habit_reminders():
             f"Время: {habit.time.strftime('%H:%M')}"
         )
 
-        url = f"{settings.TELEGRAM_API_URL}/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+        url = (
+            f"{settings.TELEGRAM_API_URL}/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+        )
 
         try:
             requests.post(url, json={"chat_id": chat_id, "text": text}, timeout=5)
