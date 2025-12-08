@@ -172,3 +172,6 @@ else:
     ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+
+STATIC_ROOT = "/app/staticfiles"
