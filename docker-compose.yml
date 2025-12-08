@@ -44,7 +44,7 @@ services:
 
   celery:
     build: ./
-    command: celery -A project worker --loglevel=INFO
+    command: celery -A config worker --loglevel=INFO
     volumes:
       - ./:/app
     env_file:
@@ -54,17 +54,17 @@ services:
       - redis
       - db
 
-  celery-beat:
-    build: ./
-    command: celery -A project beat --loglevel=INFO -S django
-    volumes:
-      - ./:/app
-    env_file:
-      - .env
-    depends_on:
-      - web
-      - redis
-      - db
+#  celery-beat:
+#    build: ./
+#    command: celery -A config beat --loglevel=INFO -S django
+#    volumes:
+#      - ./:/app
+#    env_file:
+#      - .env
+#    depends_on:
+#      - web
+#      - redis
+#      - db
 
 
 

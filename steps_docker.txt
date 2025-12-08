@@ -1,0 +1,27 @@
+pip freeze > requirements.txt
+
+исправил по нейронке:
+
+1) файл env
+поменял HOST=localhost на HOST=db
+поменял CELERY_BROKER_URL=redis://localhost:6379/0 на CELERY_BROKER_URL=redis://redis:6379/0
+
+2) в settings.py
+поменял  CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
+на CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379/0")
+
+3) в docker-compose.yml в секции selery
+поменял project на config
+
+4) в nginx.conf
+поменял proxy_pass http://web; на proxy_pass http://django;
+
+5) в nginx.conf добавил
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+
+
+6) в setting.py
+в Allowed_Hosts Добавил   "localhost", "127.0.0.1"
