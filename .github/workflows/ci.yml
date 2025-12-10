@@ -78,7 +78,7 @@ jobs:
 
           script: |  
             cd ${{ secrets.DEPLOY_DIR }}
-            git pull origin hometask352
+            git pull origin docker
             cat > .env << 'EOF'
             SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
             NAME=${{ secrets.NAME }}
@@ -89,10 +89,6 @@ jobs:
             
             # Django
             DEBUG=True
-            
-            # Stripe
-            STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
-            STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
             
             
             EOF
