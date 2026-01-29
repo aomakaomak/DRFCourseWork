@@ -25,3 +25,8 @@ proxy_set_header X-Forwarded-Proto $scheme;
 
 6) в setting.py
 в Allowed_Hosts Добавил   "localhost", "127.0.0.1"
+
+7) в docker-compose
+поменял     ports:
+      - "80:80"
+      на 8080:80
